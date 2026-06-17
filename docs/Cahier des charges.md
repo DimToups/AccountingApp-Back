@@ -42,7 +42,6 @@
 - Pouvoir ajouter un type de dépenses
 - Pouvoir ajouter un type de revenus
 - Pouvoir créer un compte (virtuel)
-	- Indique automatiquement le propriétaire
 	- Indiquer le nom
 	- Indiquer le taux (ou les taux si évolutif)
 	- Indiquer le plafond
@@ -51,14 +50,11 @@
 - Rendre l'application multi-utilisateur
 - Donner un droit de regard sur ses comptes à un autre utilisateur
 - Partager l'accès à un compte à un autre utilisateur
-- 
 ## Choix des technologies
 ### Back-end
-**Langage**: Java Spring Boot
+**Langage**: Java Spring
 **Base de données**: PostgreSQL
 ### Web
 **Langage**: VueJS
 ### Client lourd
-**Langage**: 
-- Java Swing ? (simple)
-- JavaFX ? (plus complet et compliqué)
+**Langage**: À décider
