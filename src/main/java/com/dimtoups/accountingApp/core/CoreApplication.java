@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
+@EnableJpaRepositories
 @OpenAPIDefinition(
     info = @Info(
         title = "Accounting App API",
@@ -26,7 +28,7 @@ public class CoreApplication {
   }
 
   @RequestMapping("/")
-  String home() {
+  public String home() {
     return "Hello World!";
   }
 
