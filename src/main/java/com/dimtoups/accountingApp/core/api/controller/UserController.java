@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -23,8 +24,12 @@ public class UserController {
 
   @GetMapping("/users")
   public ResponseEntity<Iterable<UserResponseDto>> getUserList() {
-    Iterable<User> allUsers = userService.findAllUsers();
-    Iterable<UserResponseDto> userResponseDtos = userConverter.convertToUserResponseDto(allUsers);
+    Collection<User> allUsers = userService.findAllUsers();
+    Collection<UserResponseDto> userResponseDtos = userConverter.convertToUserResponseDtoCollection(allUsers);
+
+    if (userResponseDtos.isEmpty()) {
+      return ResponseEntity.status(404).build();
+    }
 
     return ResponseEntity.status(200).body(userResponseDtos);
   }
@@ -75,13 +80,13 @@ public class UserController {
   }
 
   @PatchMapping("/user/{id}")
-  public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserRequestDto updatedUser) {
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserRequestDto updatedUser) {
     User updatedDbUser = userConverter.convertToUser(updatedUser, id);
 
     try {
       userService.updateUser(id, updatedDbUser);
-    } catch (IllegalAccessException exception) {
-      return ResponseEntity.status(500).build();
+    } catch (FetchNotFoundException exception) {
+      return ResponseEntity.status(404).build();
     }
 
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
