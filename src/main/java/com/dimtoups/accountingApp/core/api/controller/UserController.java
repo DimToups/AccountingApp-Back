@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -21,18 +20,6 @@ public class UserController {
   private UserService userService;
 
   private final UserConverter userConverter = new UserConverter();
-
-  @GetMapping("/users")
-  public ResponseEntity<Iterable<UserResponseDto>> getUserList() {
-    Collection<User> allUsers = userService.findAllUsers();
-    Collection<UserResponseDto> userResponseDtos = userConverter.convertToUserResponseDtoCollection(allUsers);
-
-    if (userResponseDtos.isEmpty()) {
-      return ResponseEntity.status(404).build();
-    }
-
-    return ResponseEntity.status(200).body(userResponseDtos);
-  }
 
   @GetMapping("/users/{id}")
   public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {

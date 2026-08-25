@@ -25,12 +25,6 @@ public class UserService {
     return userRepository.update(id, updatedUser);
   }
 
-  public Collection<User> findAllUsers() {
-    Collection<User> users = new ArrayList<>();
-    userRepository.findAll().forEach(users::add);
-    return users;
-  }
-
   public Optional<User> findById(Long id) {
     return userRepository.findById(id);
   }
