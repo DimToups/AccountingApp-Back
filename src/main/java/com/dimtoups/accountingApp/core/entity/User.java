@@ -2,41 +2,28 @@ package com.dimtoups.accountingApp.core.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity(name="users")
 public class User {
-  @Id
-  @GeneratedValue
-  private long id;
 
-  @Column(nullable = false)
+  @Column(length = 50)
   private String firstname;
 
-  @Column()
+  @Column(length = 50)
   private String lastname;
 
-  protected User() {
-  }
+  @Id
+  @Column(length = 64, nullable = false, unique = true)
+  private String username;
 
-  public User(String firstname) {
-    this.firstname = firstname;
-  }
+  @Column(length = 64, nullable = false)
+  private String password;
 
-  public User(String firstname, String lastname) {
-    this.firstname = firstname;
-    this.lastname = lastname;
-  }
+  @Column(nullable = false)
+  private boolean enabled;
 
-  public User(Long id, String firstname, String lastname) {
-    this.id = id;
-    this.firstname = firstname;
-    this.lastname = lastname;
-  }
-
-  public long getId() {
-    return this.id;
+  public User() {
   }
 
   public String getFirstname() {
@@ -47,8 +34,12 @@ public class User {
     return this.lastname;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public String getUsername() {
+    return username;
+  }
+
+  public String getPassword() {
+    return password;
   }
 
   public void setFirstname(String firstname) {
@@ -57,5 +48,13 @@ public class User {
 
   public void setLastname(String lastname) {
     this.lastname = lastname;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

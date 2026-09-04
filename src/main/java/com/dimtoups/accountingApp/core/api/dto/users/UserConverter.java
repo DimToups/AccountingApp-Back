@@ -1,6 +1,7 @@
 package com.dimtoups.accountingApp.core.api.dto.users;
 
 import com.dimtoups.accountingApp.core.entity.User;
+import com.dimtoups.accountingApp.core.entity.builder.UserBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,10 +19,19 @@ public class UserConverter {
   }
 
   public User convertToUser(UserRequestDto userDto) {
-    return new User(userDto.firstname(), userDto.lastname());
+    return new UserBuilder()
+        .setUsername(userDto.username())
+        .setPassword(userDto.password())
+        .setFirstname(userDto.firstname())
+        .setLastname(userDto.lastname())
+        .build();
   }
 
-  public User convertToUser(UserRequestDto userDto, Long id) {
-    return new User(id, userDto.firstname(), userDto.lastname());
+  public User convertToUser(UserRequestDto userDto, String username) {
+    return new UserBuilder()
+        .setUsername(username)
+        .setFirstname(userDto.firstname())
+        .setLastname(userDto.lastname())
+        .build();
   }
 }

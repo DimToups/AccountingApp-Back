@@ -7,7 +7,7 @@ import org.hibernate.FetchNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,39 +15,44 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  public User updateUser(@NotNull Long id, @NotNull User updatedUser) throws FetchNotFoundException {
+  public User updateUser(@NotNull String username, @NotNull User updatedUser) throws FetchNotFoundException {
     // Checking if the user exists
-    if (userRepository.existsById(id)) {
-      throw new FetchNotFoundException(User.class.getName(), id);
+    if (userRepository.findByUsername(username).isEmpty()) {
+      throw new FetchNotFoundException(User.class.getName(), username);
     }
 
     // Updating the user in the database
-    return userRepository.update(id, updatedUser);
+    return userRepository.save(updatedUser);
   }
 
   public Optional<User> findById(Long id) {
     return userRepository.findById(id);
   }
 
-  public void createUser(User user) {
-    userRepository.save(user);
+  public User createUser(User user) {
+    return userRepository.save(user);
   }
 
   public void replaceUser(User user) throws FetchNotFoundException {
     // Checking if the user exists
-    if (userRepository.existsById(user.getId())) {
-      throw new FetchNotFoundException(User.class.getName(), user.getId());
+    if (userRepository.findByUsername(user.getUsername()).isEmpty()) {
+      throw new FetchNotFoundException(User.class.getName(), user.getUsername());
     }
 
     userRepository.save(user);
   }
 
-  public void deleteUser(Long id) throws FetchNotFoundException {
+  public void deleteUser(String username) throws FetchNotFoundException {
     // Checking if the user exists
-    if (!userRepository.existsById(id)) {
-      throw new FetchNotFoundException(User.class.getName(), id);
+    Optional<User> optionalUser = userRepository.findByUsername(username);
+    if (optionalUser.isEmpty()) {
+      throw new FetchNotFoundException(User.class.getName(), username);
     }
 
-    userRepository.deleteById(id);
+    userRepository.delete(optionalUser.get());
+  }
+
+  public Optional<User> findByUsername(String username) {
+    return userRepository.findByUsername(username);
   }
 }
