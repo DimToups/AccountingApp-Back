@@ -3,7 +3,6 @@ package com.dimtoups.accountingApp.core.repository;
 import com.dimtoups.accountingApp.core.entity.User;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.FetchNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -33,7 +32,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     return dbUser;
   }
-
-  @Autowired
-  Optional<User> findByUsername(String username);
 }
