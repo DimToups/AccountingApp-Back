@@ -21,7 +21,7 @@ public class UserController {
 
   private final UserConverter userConverter = new UserConverter();
 
-  @GetMapping("/users/{id}")
+  @GetMapping("/user/{id}")
   public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
     Optional<User> optionalUser = userService.findById(id);
 
