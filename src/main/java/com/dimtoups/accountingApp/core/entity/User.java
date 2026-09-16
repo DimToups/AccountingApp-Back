@@ -17,24 +17,6 @@ public class User {
   @Column()
   private String lastname;
 
-  protected User() {
-  }
-
-  public User(String firstname) {
-    this.firstname = firstname;
-  }
-
-  public User(String firstname, String lastname) {
-    this.firstname = firstname;
-    this.lastname = lastname;
-  }
-
-  public User(Long id, String firstname, String lastname) {
-    this.id = id;
-    this.firstname = firstname;
-    this.lastname = lastname;
-  }
-
   public long getId() {
     return this.id;
   }
