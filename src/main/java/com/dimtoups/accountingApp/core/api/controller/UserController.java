@@ -2,7 +2,7 @@ package com.dimtoups.accountingApp.core.api.controller;
 
 import com.dimtoups.accountingApp.core.api.dto.users.UserRequestDto;
 import com.dimtoups.accountingApp.core.api.dto.users.UserResponseDto;
-import com.dimtoups.accountingApp.core.entity.User;
+import com.dimtoups.accountingApp.core.entity.user.User;
 import com.dimtoups.accountingApp.core.mapper.UserRequestDbMapper;
 import com.dimtoups.accountingApp.core.mapper.UserResponseDbMapper;
 import com.dimtoups.accountingApp.core.service.UserService;
@@ -26,9 +26,9 @@ public class UserController {
   @Autowired
   private UserRequestDbMapper userRequestDbMapper;
 
-  @GetMapping("/user/{id}")
-  public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
-    Optional<User> optionalUser = userService.findById(id);
+  @GetMapping("/user/{username}")
+  public ResponseEntity<UserResponseDto> getUser(@PathVariable String username) {
+    Optional<User> optionalUser = userService.findByUsername(username);
 
     if (optionalUser.isEmpty()) {
       return ResponseEntity.status(404).build();
@@ -38,19 +38,10 @@ public class UserController {
     return ResponseEntity.status(200).body(response);
   }
 
-  @PostMapping("/user")
-  public ResponseEntity<String> createUser(@RequestBody UserRequestDto userDto) {
-    User user = userRequestDbMapper.requestDtoToDbUser(userDto);
-
-    userService.createUser(user);
-
-    return ResponseEntity.status(201).build();
-  }
-
-  @DeleteMapping("/user/{id}")
-  public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+  @DeleteMapping("/user")
+  public ResponseEntity<String> deleteUser(@RequestBody String username) {
     try {
-      userService.deleteUser(id);
+      userService.deleteUser(username);
     } catch (FetchNotFoundException e) {
       return ResponseEntity.status(404).build();
     }
@@ -58,9 +49,9 @@ public class UserController {
     return ResponseEntity.status(200).build();
   }
 
-  @PutMapping("/user/{id}")
-  public ResponseEntity<String> replaceUser(@PathVariable Long id, @RequestBody UserRequestDto newUser) {
-    User dbUser = userRequestDbMapper.requestDtoToDbUser(newUser, id);
+  @PutMapping("/user")
+  public ResponseEntity<String> replaceUser(@RequestBody UserRequestDto newUser) {
+    User dbUser = userRequestDbMapper.requestDtoToDbUser(newUser);
 
     try {
       userService.replaceUser(dbUser);
@@ -71,12 +62,12 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 
-  @PatchMapping("/user/{id}")
-  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserRequestDto updatedUser) {
-    User updatedDbUser = userRequestDbMapper.requestDtoToDbUser(updatedUser, id);
+  @PatchMapping("/user")
+  public ResponseEntity<User> updateUser(@RequestBody UserRequestDto updatedUser) {
+    User updatedDbUser = userRequestDbMapper.requestDtoToDbUser(updatedUser);
 
     try {
-      userService.updateUser(id, updatedDbUser);
+      userService.updateUser(updatedDbUser);
     } catch (FetchNotFoundException exception) {
       return ResponseEntity.status(404).build();
     }
