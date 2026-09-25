@@ -1,10 +1,11 @@
 package com.dimtoups.accountingApp.core.api.controller;
 
-import com.dimtoups.accountingApp.core.api.dto.users.UserRequestDto;
+import com.dimtoups.accountingApp.core.api.dto.users.ReplaceUserRequestDto;
+import com.dimtoups.accountingApp.core.api.dto.users.UpdateUserRequestDto;
 import com.dimtoups.accountingApp.core.api.dto.users.UserResponseDto;
 import com.dimtoups.accountingApp.core.entity.user.User;
-import com.dimtoups.accountingApp.core.mapper.UserRequestDbMapper;
-import com.dimtoups.accountingApp.core.mapper.UserResponseDbMapper;
+import com.dimtoups.accountingApp.core.mapper.user.UserRequestsMapper;
+import com.dimtoups.accountingApp.core.mapper.user.UserResponseDbMapper;
 import com.dimtoups.accountingApp.core.service.UserService;
 import org.hibernate.FetchNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +22,21 @@ public class UserController {
   private UserService userService;
 
   @Autowired
-  private UserResponseDbMapper userResponseDbMapper;
+  private UserResponseDbMapper userResponseMapper;
 
   @Autowired
-  private UserRequestDbMapper userRequestDbMapper;
+  private UserRequestsMapper userRequestsMapper;
 
-  @GetMapping("/user/{username}")
-  public ResponseEntity<UserResponseDto> getUser(@PathVariable String username) {
+  @GetMapping("/user")
+  public ResponseEntity<UserResponseDto> getUser(@RequestBody String username) {
     Optional<User> optionalUser = userService.findByUsername(username);
 
     if (optionalUser.isEmpty()) {
-      return ResponseEntity.status(404).build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    UserResponseDto response = userResponseDbMapper.dbUserToUserResponseDto(optionalUser.get());
-    return ResponseEntity.status(200).body(response);
+    UserResponseDto response = userResponseMapper.dbUserToUserResponseDto(optionalUser.get());
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
   }
 
   @DeleteMapping("/user")
@@ -43,15 +44,15 @@ public class UserController {
     try {
       userService.deleteUser(username);
     } catch (FetchNotFoundException e) {
-      return ResponseEntity.status(404).build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    return ResponseEntity.status(200).build();
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 
   @PutMapping("/user")
-  public ResponseEntity<String> replaceUser(@RequestBody UserRequestDto newUser) {
-    User dbUser = userRequestDbMapper.requestDtoToDbUser(newUser);
+  public ResponseEntity<Void> replaceUser(@RequestBody ReplaceUserRequestDto newUser) {
+    User dbUser = userRequestsMapper.replaceUserDtoToDbUser(newUser);
 
     try {
       userService.replaceUser(dbUser);
@@ -59,19 +60,19 @@ public class UserController {
       return ResponseEntity.status(404).build();
     }
 
-    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
   @PatchMapping("/user")
-  public ResponseEntity<User> updateUser(@RequestBody UserRequestDto updatedUser) {
-    User updatedDbUser = userRequestDbMapper.requestDtoToDbUser(updatedUser);
+  public ResponseEntity<Void> updateUser(@RequestBody UpdateUserRequestDto updateUserRequestDto) {
+    User updatedDbUser = userRequestsMapper.updtaeUserRequestDtoToDbUser(updateUserRequestDto);
 
     try {
       userService.updateUser(updatedDbUser);
     } catch (FetchNotFoundException exception) {
-      return ResponseEntity.status(404).build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

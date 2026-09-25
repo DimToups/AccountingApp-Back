@@ -1,4 +1,4 @@
-package com.dimtoups.accountingApp.core.mapper;
+package com.dimtoups.accountingApp.core.mapper.user;
 
 import com.dimtoups.accountingApp.core.entity.user.User;
 import org.mapstruct.*;

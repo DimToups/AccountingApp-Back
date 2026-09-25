@@ -4,7 +4,7 @@ import com.dimtoups.accountingApp.core.api.dto.authentification.SignupRequestDto
 import com.dimtoups.accountingApp.core.entity.authority.Authority;
 import com.dimtoups.accountingApp.core.entity.user.User;
 import com.dimtoups.accountingApp.core.mapper.SignupRequestDbMapper;
-import com.dimtoups.accountingApp.core.mapper.UserMapper;
+import com.dimtoups.accountingApp.core.mapper.user.UserMapper;
 import com.dimtoups.accountingApp.core.repository.AuthorizationRepository;
 import com.dimtoups.accountingApp.core.repository.UserRepository;
 import jakarta.validation.constraints.NotNull;

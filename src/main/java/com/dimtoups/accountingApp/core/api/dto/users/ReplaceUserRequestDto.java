@@ -1,6 +1,6 @@
 package com.dimtoups.accountingApp.core.api.dto.users;
 
-public record UserRequestDto(
+public record ReplaceUserRequestDto(
     String username,
     String firstname,
     String lastname) {
