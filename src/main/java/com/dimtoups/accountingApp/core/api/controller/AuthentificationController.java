@@ -7,6 +7,7 @@ import com.dimtoups.accountingApp.core.api.helper.JwtHelper;
 import com.dimtoups.accountingApp.core.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,18 +30,23 @@ public class AuthentificationController {
     this.userService = userService;
   }
 
+
   //
   // Requests
   //
 
   @PostMapping("/signup")
-  public ResponseEntity<String> signup(@RequestBody SignupRequestDto signupRequestDto) {
+  public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
     userService.signup(signupRequestDto);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request, HttpServletResponse response, CookieCsrfTokenRepository csrfTokenRepository) {
+  public ResponseEntity<LoginResponseDto> login(
+      @Valid @RequestBody LoginRequestDto loginRequestDto,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      CookieCsrfTokenRepository csrfTokenRepository) {
     // Authenticating the user
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequestDto.username(), loginRequestDto.password()));

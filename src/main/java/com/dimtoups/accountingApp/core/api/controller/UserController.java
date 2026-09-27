@@ -7,6 +7,7 @@ import com.dimtoups.accountingApp.core.entity.user.User;
 import com.dimtoups.accountingApp.core.mapper.user.UserRequestsMapper;
 import com.dimtoups.accountingApp.core.mapper.user.UserResponseDbMapper;
 import com.dimtoups.accountingApp.core.service.UserService;
+import jakarta.validation.Valid;
 import org.hibernate.FetchNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,8 @@ public class UserController {
   @Autowired
   private UserRequestsMapper userRequestsMapper;
 
-  @GetMapping("/user")
-  public ResponseEntity<UserResponseDto> getUser(@RequestBody String username) {
+  @GetMapping("/user/{username}")
+  public ResponseEntity<UserResponseDto> getUser(@PathVariable String username) {
     Optional<User> optionalUser = userService.findByUsername(username);
 
     if (optionalUser.isEmpty()) {
@@ -51,7 +52,7 @@ public class UserController {
   }
 
   @PutMapping("/user")
-  public ResponseEntity<Void> replaceUser(@RequestBody ReplaceUserRequestDto newUser) {
+  public ResponseEntity<Void> replaceUser(@Valid @RequestBody ReplaceUserRequestDto newUser) {
     User dbUser = userRequestsMapper.replaceUserDtoToDbUser(newUser);
 
     try {
@@ -64,7 +65,7 @@ public class UserController {
   }
 
   @PatchMapping("/user")
-  public ResponseEntity<Void> updateUser(@RequestBody UpdateUserRequestDto updateUserRequestDto) {
+  public ResponseEntity<Void> updateUser(@Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
     User updatedDbUser = userRequestsMapper.updtaeUserRequestDtoToDbUser(updateUserRequestDto);
 
     try {

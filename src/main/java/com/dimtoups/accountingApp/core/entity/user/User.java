@@ -1,24 +1,65 @@
 package com.dimtoups.accountingApp.core.entity.user;
 
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.Length;
 
+/**
+ * The user database entity.
+ * <br>
+ * It both contains common information about the user (like username, firstname, ...)
+ * and information for their authentication (password, is their account enabled).
+ */
 @Entity(name="users")
 public class User {
 
+  public static final int USERNAME_MAX_LENGTH = 64;
+  public static final int USERNAME_MIN_LENGTH = 1;
+
+  public static final int FIRSTNAME_MAX_LENGTH = 64;
+  public static final int FIRSTNAME_MIN_LENGTH = 1;
+
+  public static final int LASTNAME_MAX_LENGTH = 64;
+  public static final int LASTNAME_MIN_LENGTH = 1;
+
+  public static final int PASSWORD_MAX_LENGTH = 60;
+  public static final int PASSWORD_MIN_LENGTH = 8;
+
+  /**
+   * The user's own username.
+   * No other user can have the same username.
+   */
   @Id
   @Column(nullable = false, unique = true)
+  @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH)
   public String username;
 
+  /**
+   * The user's password used for authentication.
+   * <br>
+   * Passwords are stored in the BCrypt format, so the maximum length is 60 characters.
+   */
   @Column(nullable = false)
+  @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
   private String password;
 
+  /**
+   * A boolean indicating if the user account is enabled ({@code true}) or not ({@code false}).
+   */
   @Column(nullable = false)
   private boolean enabled;
 
-  @Column()
+  /**
+   * The user's firstname.
+   */
+  @Column
+  @Length(min = FIRSTNAME_MIN_LENGTH, max = FIRSTNAME_MAX_LENGTH)
   private String firstname;
 
-  @Column()
+  /**
+   * The user's lastname.
+   */
+  @Column
+  @Length(min = LASTNAME_MIN_LENGTH, max = LASTNAME_MAX_LENGTH)
   private String lastname;
 
   public String getFirstname() {

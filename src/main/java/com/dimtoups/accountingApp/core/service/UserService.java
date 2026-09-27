@@ -100,7 +100,7 @@ public class UserService {
     userRepository.save(newUser);
 
     // Adding the default role to the user
-    Authority authority = new Authority(Authority.Authorities.ROLE_USER, newUser);
+    Authority authority = new Authority(newUser, Authority.Authorities.ROLE_USER);
     authorizationRepository.save(authority);
   }
 }
