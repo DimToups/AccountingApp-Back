@@ -69,4 +69,22 @@ public class AuthorityPk {
   public void setAuthority(Authority.Authorities authority) {
     this.authority = authority.name();
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof AuthorityPk)) {
+      return false;
+    }
+    AuthorityPk primaryKey = (AuthorityPk) obj;
+
+    if (!primaryKey.username.equals(this.username)) {
+      return false;
+    }
+
+    if (!primaryKey.authority.equals(this.authority)) {
+      return false;
+    }
+
+    return true;
+  }
 }
