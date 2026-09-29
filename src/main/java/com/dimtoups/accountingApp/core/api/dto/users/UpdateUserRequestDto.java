@@ -10,11 +10,9 @@ public record UpdateUserRequestDto(
     String username,
 
     @Size(min = User.FIRSTNAME_MIN_LENGTH, max = User.FIRSTNAME_MAX_LENGTH)
-    @NotBlank
     String firstname,
 
     @Size(min = User.LASTNAME_MIN_LENGTH, max = User.LASTNAME_MAX_LENGTH)
-    @NotBlank
     String lastname) {
 
 }

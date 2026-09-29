@@ -30,6 +30,11 @@ public class JwtHelper {
     return getTokenBody(token).getSubject();
   }
 
+  public static boolean isClientAuthorized(String bearerToken, String username) {
+    String jwToken = bearerToken.replace("Bearer ", "");
+    return JwtHelper.extractUsername(jwToken).equals(username);
+  }
+
   public static Boolean validateToken(String token, UserDetails userDetails) {
     final String username = extractUsername(token);
     return username.equals(userDetails.getUsername()) && !isTokenExpired(token);

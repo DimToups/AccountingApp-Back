@@ -7,6 +7,7 @@ import com.dimtoups.accountingApp.core.mapper.SignupRequestDbMapper;
 import com.dimtoups.accountingApp.core.mapper.user.UserMapper;
 import com.dimtoups.accountingApp.core.repository.AuthorizationRepository;
 import com.dimtoups.accountingApp.core.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.FetchNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
@@ -74,11 +75,16 @@ public class UserService {
     userRepository.save(dbUser);
   }
 
+  @Transactional
   public void deleteUser(String username) throws FetchNotFoundException {
     // Checking if the user exists
-    if (userRepository.findByUsername(username).isEmpty()) {
+    Optional<User> optionalUser = userRepository.findByUsername(username);
+    if (optionalUser.isEmpty()) {
       throw new FetchNotFoundException(User.class.getName(), username);
     }
+
+    // Removing every constraint from the user
+    authorizationRepository.deleteAllByUser(optionalUser.get());
 
     userRepository.deleteByUsername(username);
   }

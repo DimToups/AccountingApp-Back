@@ -1,8 +1,7 @@
 package com.dimtoups.accountingApp.core.api.controller;
 
-import com.dimtoups.accountingApp.core.api.dto.users.ReplaceUserRequestDto;
-import com.dimtoups.accountingApp.core.api.dto.users.UpdateUserRequestDto;
-import com.dimtoups.accountingApp.core.api.dto.users.UserResponseDto;
+import com.dimtoups.accountingApp.core.api.dto.users.*;
+import com.dimtoups.accountingApp.core.api.helper.JwtHelper;
 import com.dimtoups.accountingApp.core.entity.user.User;
 import com.dimtoups.accountingApp.core.mapper.user.UserRequestsMapper;
 import com.dimtoups.accountingApp.core.mapper.user.UserResponseDbMapper;
@@ -29,9 +28,16 @@ public class UserController {
   private UserRequestsMapper userRequestsMapper;
 
   @GetMapping("/user/{username}")
-  public ResponseEntity<UserResponseDto> getUser(@PathVariable String username) {
-    Optional<User> optionalUser = userService.findByUsername(username);
+  public ResponseEntity<UserResponseDto> getUser(
+      @PathVariable String username,
+      @RequestHeader(name = "Authorization") String bearerToken) {
+    // Checking if the client can access the information
+    if (!JwtHelper.isClientAuthorized(bearerToken, username)) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
+    // Finding the user
+    Optional<User> optionalUser = userService.findByUsername(username);
     if (optionalUser.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -41,9 +47,17 @@ public class UserController {
   }
 
   @DeleteMapping("/user")
-  public ResponseEntity<String> deleteUser(@RequestBody String username) {
+  public ResponseEntity<String> deleteUser(
+      @RequestBody DeleteUserDto deleteUserDto,
+      @RequestHeader(name = "Authorization") String bearerToken) {
+    // Checking if the client can access the information
+    if (!JwtHelper.isClientAuthorized(bearerToken, deleteUserDto.username())) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    // Deleting the user
     try {
-      userService.deleteUser(username);
+      userService.deleteUser(deleteUserDto.username());
     } catch (FetchNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -52,9 +66,16 @@ public class UserController {
   }
 
   @PutMapping("/user")
-  public ResponseEntity<Void> replaceUser(@Valid @RequestBody ReplaceUserRequestDto newUser) {
-    User dbUser = userRequestsMapper.replaceUserDtoToDbUser(newUser);
+  public ResponseEntity<Void> replaceUser(
+      @Valid @RequestBody ReplaceUserRequestDto newUser,
+      @RequestHeader(name = "Authorization") String bearerToken) {
+    // Checking if the client can access the information
+    if (!JwtHelper.isClientAuthorized(bearerToken, newUser.username())) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
+    // Replacing the user
+    User dbUser = userRequestsMapper.replaceUserDtoToDbUser(newUser);
     try {
       userService.replaceUser(dbUser);
     } catch (FetchNotFoundException e) {
@@ -65,9 +86,16 @@ public class UserController {
   }
 
   @PatchMapping("/user")
-  public ResponseEntity<Void> updateUser(@Valid @RequestBody UpdateUserRequestDto updateUserRequestDto) {
-    User updatedDbUser = userRequestsMapper.updtaeUserRequestDtoToDbUser(updateUserRequestDto);
+  public ResponseEntity<Void> updateUser(
+      @Valid @RequestBody UpdateUserRequestDto updateUserRequestDto,
+      @RequestHeader(name = "Authorization") String bearerToken) {
+    // Checking if the client can access the information
+    if (!JwtHelper.isClientAuthorized(bearerToken, updateUserRequestDto.username())) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
+    // Update the user
+    User updatedDbUser = userRequestsMapper.updtaeUserRequestDtoToDbUser(updateUserRequestDto);
     try {
       userService.updateUser(updatedDbUser);
     } catch (FetchNotFoundException exception) {
