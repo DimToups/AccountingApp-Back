@@ -1,4 +1,4 @@
-src/main/resources/env.properties
+src/*/resources/env.properties
 
 # Obsidian
 .obsidian/plugins

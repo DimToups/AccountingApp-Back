@@ -81,7 +81,7 @@ public class UserService {
     return userRepository.findByUsername(username);
   }
 
-  public void signup(SignupRequestDto signupRequestDto) throws DuplicateKeyException {
+  public void createUser(SignupRequestDto signupRequestDto) throws DuplicateKeyException {
     // Checking if the username does not already exist
     if (userRepository.findByUsername(signupRequestDto.username()).isPresent()) {
       throw new DuplicateKeyException("A user with the username " + signupRequestDto.username() + " already exists");

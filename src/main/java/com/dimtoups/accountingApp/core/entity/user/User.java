@@ -62,6 +62,33 @@ public class User {
   @Length(min = LASTNAME_MIN_LENGTH, max = LASTNAME_MAX_LENGTH)
   private String lastname;
 
+  /**
+   * An empty constructor that can be used by Spring.
+   */
+  public User() {
+
+  }
+
+  /**
+   * Creates an instance of {@link User} with a defined username.
+   * @param username The wanted username
+   */
+  public User(String username) {
+    this.username = username;
+  }
+
+  /**
+   * Creates an instance of {@link User} with each of its non-nullable values for the database.
+   * @param username The user's username
+   * @param password The user's password
+   * @param enabled A boolean indicating if the user is activated or not
+   */
+  public User(String username, String password, boolean enabled) {
+    this.username = username;
+    this.password = password;
+    this.enabled = enabled;
+  }
+
   public String getFirstname() {
     return this.firstname;
   }
