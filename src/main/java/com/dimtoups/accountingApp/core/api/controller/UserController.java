@@ -65,26 +65,6 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 
-  @PutMapping("/user")
-  public ResponseEntity<Void> replaceUser(
-      @Valid @RequestBody ReplaceUserRequestDto newUser,
-      @RequestHeader(name = "Authorization") String bearerToken) {
-    // Checking if the client can access the information
-    if (!JwtHelper.isClientAuthorized(bearerToken, newUser.username())) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-    }
-
-    // Replacing the user
-    User dbUser = userRequestsMapper.replaceUserDtoToDbUser(newUser);
-    try {
-      userService.replaceUser(dbUser);
-    } catch (FetchNotFoundException e) {
-      return ResponseEntity.status(404).build();
-    }
-
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
-
   @PatchMapping("/user")
   public ResponseEntity<Void> updateUser(
       @Valid @RequestBody UpdateUserRequestDto updateUserRequestDto,

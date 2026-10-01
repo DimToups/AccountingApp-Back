@@ -63,18 +63,6 @@ public class UserService {
     return userRepository.save(dbUser);
   }
 
-  public void replaceUser(User modifiedUser) throws FetchNotFoundException {
-    // Checking if the user exists
-    Optional<User> optionalDbUser = userRepository.findByUsername(modifiedUser.getUsername());
-    if (optionalDbUser.isEmpty()) {
-      throw new FetchNotFoundException(User.class.getName(), modifiedUser.getUsername());
-    }
-    User dbUser = optionalDbUser.get();
-    userMapper.updateUser(dbUser, modifiedUser);
-
-    userRepository.save(dbUser);
-  }
-
   @Transactional
   public void deleteUser(String username) throws FetchNotFoundException {
     // Checking if the user exists
