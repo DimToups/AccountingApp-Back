@@ -4,6 +4,7 @@ import com.dimtoups.accountingApp.core.api.dto.authentification.LoginRequestDto;
 import com.dimtoups.accountingApp.core.api.dto.authentification.LoginResponseDto;
 import com.dimtoups.accountingApp.core.api.dto.authentification.SignupRequestDto;
 import com.dimtoups.accountingApp.core.api.helper.JwtHelper;
+import com.dimtoups.accountingApp.core.mapper.user.UserControllerDtoToServiceDtoMapper;
 import com.dimtoups.accountingApp.core.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,9 +26,12 @@ public class AuthentificationController {
 
   private final UserService userService;
 
-  public AuthentificationController(AuthenticationManager authenticationManager, UserService userService) {
+  private final UserControllerDtoToServiceDtoMapper userControllerDtoToServiceDtoMapper;
+
+  public AuthentificationController(AuthenticationManager authenticationManager, UserService userService, UserControllerDtoToServiceDtoMapper userControllerDtoToServiceDtoMapper) {
     this.authenticationManager = authenticationManager;
     this.userService = userService;
+    this.userControllerDtoToServiceDtoMapper = userControllerDtoToServiceDtoMapper;
   }
 
 
@@ -37,7 +41,7 @@ public class AuthentificationController {
 
   @PostMapping("/signup")
   public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
-    userService.createUser(signupRequestDto);
+    userService.createUser(userControllerDtoToServiceDtoMapper.createUser(signupRequestDto));
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 

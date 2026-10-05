@@ -3,6 +3,8 @@ package com.dimtoups.accountingApp.core.service;
 import com.dimtoups.accountingApp.core.entity.authority.Authority;
 import com.dimtoups.accountingApp.core.entity.user.User;
 import com.dimtoups.accountingApp.core.repository.AuthorizationRepository;
+import com.dimtoups.accountingApp.core.service.dto.users.DeleteUserDto;
+import com.dimtoups.accountingApp.core.service.dto.users.UpdateUserDto;
 import org.hibernate.FetchNotFoundException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -69,26 +71,25 @@ public class UserServiceTest {
 
   @Nested
   public class UpdateUser {
+
     @Test
     public void isReturnedUserUpdated() {
       // Given
       User originalUserCopy = userService.findByUsername(BASIC_USERNAME).get();
-      User updatedUser = userService.findByUsername(BASIC_USERNAME).get();
-      updatedUser.setLastname("Ananas");
+      UpdateUserDto updatedUser = new UpdateUserDto(BASIC_USERNAME, "Ananas", null);
 
       // When
-      updatedUser = userService.updateUser(updatedUser);
+      User updatedDbUser = userService.updateUser(updatedUser);
 
       // Then
-      assertNotEquals(originalUserCopy, updatedUser);
+      assertNotEquals(originalUserCopy, updatedDbUser);
     }
 
     @Test
     public void isDatabaseUserUpdated() {
       // Given
       User originalUserCopy = userService.findByUsername(BASIC_USERNAME).get();
-      User updatedUser = userService.findByUsername(BASIC_USERNAME).get();
-      updatedUser.setLastname("Ananas");
+      UpdateUserDto updatedUser = new UpdateUserDto(BASIC_USERNAME, null, "Ananas");
 
       // When
       userService.updateUser(updatedUser);
@@ -101,21 +102,19 @@ public class UserServiceTest {
     public void areUnupdatedVariablesUnchanged() {
       // Given
       User originalUserCopy = userService.findByUsername(BASIC_USERNAME).get();
-      User updatedUser = userService.findByUsername(BASIC_USERNAME).get();
-      updatedUser.setLastname("Ananas");
+      UpdateUserDto updatedUser = new UpdateUserDto(BASIC_USERNAME, null, "Ananas");
 
       // When
-      updatedUser = userService.updateUser(updatedUser);
+      User updatedDbUser = userService.updateUser(updatedUser);
 
       // Then
-      assertEquals(originalUserCopy.getFirstname(), updatedUser.getFirstname());
+      assertEquals(originalUserCopy.getFirstname(), updatedDbUser.getFirstname());
     }
 
     @Test
     public void isDatabaseUserEnabledVariableIgnored() {
       // Given
-      User updatedUser = userService.findByUsername(BASIC_USERNAME).get();
-      updatedUser.setEnabled(false);
+      UpdateUserDto updatedUser = new UpdateUserDto(BASIC_USERNAME, null, null);
 
       // When
       userService.updateUser(updatedUser);
@@ -127,7 +126,7 @@ public class UserServiceTest {
     @Test
     public void isAnExceptionThrownWhenGivenAnIncorrectUsername() {
       // Given
-      User unknownUser = new User(UNKNOWN_USERNAME);
+      UpdateUserDto unknownUser = new UpdateUserDto(UNKNOWN_USERNAME, null, null);
 
       // When / Then
       assertThrowsExactly(FetchNotFoundException.class,
@@ -140,12 +139,12 @@ public class UserServiceTest {
     @Test
     public void isTheUserDeletedWhenGivenItsUsername() {
       // Given
-      String username = BASIC_USERNAME;
-      Optional<User> originalUser = userService.findByUsername(username);
+      DeleteUserDto deleteUserDto = new DeleteUserDto(BASIC_USERNAME);
+      Optional<User> originalUser = userService.findByUsername(deleteUserDto.username());
 
       // When
-      userService.deleteUser(username);
-      Optional<User> optionalUser = userService.findByUsername(username);
+      userService.deleteUser(deleteUserDto);
+      Optional<User> optionalUser = userService.findByUsername(deleteUserDto.username());
 
       // Then
       assertTrue(originalUser.isPresent());
@@ -157,9 +156,10 @@ public class UserServiceTest {
       // Given
       User originalUser = userService.findByUsername(BASIC_USERNAME).get();
       List<Authority> originalAuthorities = authorizationRepository.findAllByUser(originalUser);
+      DeleteUserDto deleteUserDto = new DeleteUserDto(originalUser.getUsername());
 
       // When
-      userService.deleteUser(originalUser.getUsername());
+      userService.deleteUser(deleteUserDto);
       List<Authority> newAuthorities = authorizationRepository.findAllByUser(originalUser);
 
       // Then
@@ -170,12 +170,12 @@ public class UserServiceTest {
     @Test
     public void isNoUserDeletedWhenGivenAnIncorrectUsername() {
       // Given
-      String unknownUsername = UNKNOWN_USERNAME;
+      DeleteUserDto deleteUserDto = new DeleteUserDto(UNKNOWN_USERNAME);
 
       // When / Then
       assertThrowsExactly(
           FetchNotFoundException.class,
-          () -> userService.deleteUser(unknownUsername));
+          () -> userService.deleteUser(deleteUserDto));
     }
   }
 }

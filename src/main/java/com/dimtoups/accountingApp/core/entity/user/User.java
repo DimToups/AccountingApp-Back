@@ -20,7 +20,8 @@ public class User {
   public static final int LASTNAME_MAX_LENGTH = 64;
   public static final int LASTNAME_MIN_LENGTH = 1;
 
-  public static final int PASSWORD_MAX_LENGTH = 60;
+  // When talking about the password length, it references the entered value and not the encrypted value
+  public static final int PASSWORD_MAX_LENGTH = 64;
   public static final int PASSWORD_MIN_LENGTH = 8;
 
   /**
