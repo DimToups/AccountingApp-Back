@@ -1,7 +1,6 @@
 package com.dimtoups.accountingApp.core.entity.user;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.Length;
 
 /**
  * The user database entity.
@@ -30,7 +29,6 @@ public class User {
    */
   @Id
   @Column(nullable = false, unique = true)
-  @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH)
   public String username;
 
   /**
@@ -39,7 +37,6 @@ public class User {
    * Passwords are stored in the BCrypt format, so the maximum length is 60 characters.
    */
   @Column(nullable = false)
-  @Length(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
   private String password;
 
   /**
@@ -52,14 +49,12 @@ public class User {
    * The user's firstname.
    */
   @Column
-  @Length(min = FIRSTNAME_MIN_LENGTH, max = FIRSTNAME_MAX_LENGTH)
   private String firstname;
 
   /**
    * The user's lastname.
    */
   @Column
-  @Length(min = LASTNAME_MIN_LENGTH, max = LASTNAME_MAX_LENGTH)
   private String lastname;
 
   /**

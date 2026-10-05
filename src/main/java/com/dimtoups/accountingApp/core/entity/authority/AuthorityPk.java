@@ -3,7 +3,6 @@ package com.dimtoups.accountingApp.core.entity.authority;
 import com.dimtoups.accountingApp.core.entity.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import org.hibernate.validator.constraints.Length;
 
 /**
  * {@link Authority}'s composite key.
@@ -19,7 +18,6 @@ public class AuthorityPk {
    * The referenced user's username.
    */
   @Column(name = "username")
-  @Length(min = User.USERNAME_MIN_LENGTH, max = User.USERNAME_MAX_LENGTH)
   private String username;
 
   /**
@@ -34,7 +32,6 @@ public class AuthorityPk {
    * </p>
    */
   @Column
-  @Length(min = Authority.AUTHORITY_MIN_LENGTH, max= Authority.AUTHORITY_MAX_LENGTH)
   private String authority;
 
   /**

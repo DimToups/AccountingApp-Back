@@ -13,9 +13,6 @@ import jakarta.persistence.*;
 @Entity(name = "authorities")
 public class Authority {
 
-  public static final int AUTHORITY_MIN_LENGTH = 6;
-  public static final int AUTHORITY_MAX_LENGTH = 32;
-
   /**
    * The entity's composite key.
    */
