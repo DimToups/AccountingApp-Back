@@ -1,4 +1,4 @@
-package com.dimtoups.accountingApp.core.api.helper;
+package com.dimtoups.accountingApp.core.helper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

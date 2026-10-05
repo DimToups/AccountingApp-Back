@@ -1,9 +1,9 @@
-package com.dimtoups.accountingApp.core.api.controller;
+package com.dimtoups.accountingApp.core.controller;
 
-import com.dimtoups.accountingApp.core.api.dto.users.DeleteUserRequestDto;
-import com.dimtoups.accountingApp.core.api.helper.JwtHelper;
-import com.dimtoups.accountingApp.core.api.dto.users.UpdateUserRequestDto;
-import com.dimtoups.accountingApp.core.api.dto.users.UserResponseDto;
+import com.dimtoups.accountingApp.core.controller.dto.users.DeleteUserRequestDto;
+import com.dimtoups.accountingApp.core.helper.JwtHelper;
+import com.dimtoups.accountingApp.core.controller.dto.users.UpdateUserRequestDto;
+import com.dimtoups.accountingApp.core.controller.dto.users.UserResponseDto;
 import com.dimtoups.accountingApp.core.entity.user.User;
 import com.dimtoups.accountingApp.core.mapper.user.UserControllerDtoToServiceDtoMapper;
 import com.dimtoups.accountingApp.core.mapper.user.UserResponseDbMapper;

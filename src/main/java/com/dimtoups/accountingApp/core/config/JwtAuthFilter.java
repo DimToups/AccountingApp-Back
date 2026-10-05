@@ -1,6 +1,6 @@
 package com.dimtoups.accountingApp.core.config;
 
-import com.dimtoups.accountingApp.core.api.helper.JwtHelper;
+import com.dimtoups.accountingApp.core.helper.JwtHelper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

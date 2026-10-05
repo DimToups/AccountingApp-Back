@@ -1,6 +1,6 @@
 package com.dimtoups.accountingApp.core.mapper.user;
 
-import com.dimtoups.accountingApp.core.api.dto.users.UserResponseDto;
+import com.dimtoups.accountingApp.core.controller.dto.users.UserResponseDto;
 import com.dimtoups.accountingApp.core.entity.user.User;
 import org.mapstruct.Mapper;
 

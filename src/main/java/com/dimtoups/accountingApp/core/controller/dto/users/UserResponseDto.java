@@ -1,4 +1,4 @@
-package com.dimtoups.accountingApp.core.api.dto.users;
+package com.dimtoups.accountingApp.core.controller.dto.users;
 
 public record UserResponseDto(
     String firstname,

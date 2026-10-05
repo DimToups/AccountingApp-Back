@@ -1,4 +1,4 @@
-package com.dimtoups.accountingApp.core.api.dto.authentification;
+package com.dimtoups.accountingApp.core.controller.dto.authentification;
 
 import com.dimtoups.accountingApp.core.entity.user.User;
 import jakarta.validation.constraints.NotBlank;

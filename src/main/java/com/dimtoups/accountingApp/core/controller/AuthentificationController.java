@@ -1,9 +1,9 @@
-package com.dimtoups.accountingApp.core.api.controller;
+package com.dimtoups.accountingApp.core.controller;
 
-import com.dimtoups.accountingApp.core.api.dto.authentification.LoginRequestDto;
-import com.dimtoups.accountingApp.core.api.dto.authentification.LoginResponseDto;
-import com.dimtoups.accountingApp.core.api.dto.authentification.SignupRequestDto;
-import com.dimtoups.accountingApp.core.api.helper.JwtHelper;
+import com.dimtoups.accountingApp.core.controller.dto.authentification.LoginRequestDto;
+import com.dimtoups.accountingApp.core.controller.dto.authentification.LoginResponseDto;
+import com.dimtoups.accountingApp.core.controller.dto.authentification.SignupRequestDto;
+import com.dimtoups.accountingApp.core.helper.JwtHelper;
 import com.dimtoups.accountingApp.core.mapper.user.UserControllerDtoToServiceDtoMapper;
 import com.dimtoups.accountingApp.core.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;

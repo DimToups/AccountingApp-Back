@@ -1,8 +1,8 @@
 package com.dimtoups.accountingApp.core.mapper.user;
 
-import com.dimtoups.accountingApp.core.api.dto.authentification.SignupRequestDto;
-import com.dimtoups.accountingApp.core.api.dto.users.DeleteUserRequestDto;
-import com.dimtoups.accountingApp.core.api.dto.users.UpdateUserRequestDto;
+import com.dimtoups.accountingApp.core.controller.dto.authentification.SignupRequestDto;
+import com.dimtoups.accountingApp.core.controller.dto.users.DeleteUserRequestDto;
+import com.dimtoups.accountingApp.core.controller.dto.users.UpdateUserRequestDto;
 import com.dimtoups.accountingApp.core.service.dto.users.CreateUserDto;
 import com.dimtoups.accountingApp.core.service.dto.users.DeleteUserDto;
 import com.dimtoups.accountingApp.core.service.dto.users.UpdateUserDto;
