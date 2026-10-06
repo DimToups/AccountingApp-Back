@@ -30,10 +30,10 @@ public class SecurityConfiguration {
         .csrf(csrf -> csrf
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
-            .ignoringRequestMatchers("/login", "/signup")
         )
         .httpBasic(Customizer.withDefaults())
         .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers(HttpMethod.GET, "/login", "/signup").permitAll()
             .requestMatchers(HttpMethod.POST, "/login", "/signup").permitAll()
             .anyRequest().authenticated()
         )

@@ -1,8 +1,6 @@
 package com.dimtoups.accountingApp.core.controller;
 
-import com.dimtoups.accountingApp.core.controller.dto.authentification.LoginRequestDto;
-import com.dimtoups.accountingApp.core.controller.dto.authentification.LoginResponseDto;
-import com.dimtoups.accountingApp.core.controller.dto.authentification.SignupRequestDto;
+import com.dimtoups.accountingApp.core.controller.dto.authentification.*;
 import com.dimtoups.accountingApp.core.helper.JwtHelper;
 import com.dimtoups.accountingApp.core.mapper.user.UserControllerDtoToServiceDtoMapper;
 import com.dimtoups.accountingApp.core.service.UserService;
@@ -15,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,27 +38,47 @@ public class AuthentificationController {
   // Requests
   //
 
+  @GetMapping("/signup")
+  public ResponseEntity<GetSignupResponseDto> signup(
+      CookieCsrfTokenRepository csrfTokenRepository,
+      HttpServletRequest request,
+      HttpServletResponse response) {
+    // Generating a csrf token
+    CsrfToken csrfToken = csrfTokenRepository.generateToken(request);
+    csrfTokenRepository.saveToken(csrfToken, request, response);
+
+    GetSignupResponseDto getSignupResponseDto = new GetSignupResponseDto(csrfToken);
+    return ResponseEntity.status(200).body(getSignupResponseDto);
+  }
+
   @PostMapping("/signup")
-  public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
-    userService.createUser(userControllerDtoToServiceDtoMapper.createUser(signupRequestDto));
+  public ResponseEntity<String> signup(@Valid @RequestBody PostSignupRequestDto postSignupRequestDto) {
+    userService.createUser(userControllerDtoToServiceDtoMapper.createUser(postSignupRequestDto));
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-  @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> login(
-      @Valid @RequestBody LoginRequestDto loginRequestDto,
+  @GetMapping("/login")
+  public ResponseEntity<GetLoginResponseDto> login(
+      CookieCsrfTokenRepository csrfTokenRepository,
       HttpServletRequest request,
-      HttpServletResponse response,
-      CookieCsrfTokenRepository csrfTokenRepository) {
+      HttpServletResponse response) {
+    // Generating a csrf token
+    CsrfToken csrfToken = csrfTokenRepository.generateToken(request);
+    csrfTokenRepository.saveToken(csrfToken, request, response);
+
+    GetLoginResponseDto getLoginResponseDto = new GetLoginResponseDto(csrfToken);
+    return ResponseEntity.status(200).body(getLoginResponseDto);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody PostLoginRequestDto loginRequestDto) {
     // Authenticating the user
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequestDto.username(), loginRequestDto.password()));
 
-    // Generating the user's JWT and csrf token
+    // Generating the user's JWT
     String jwToken = JwtHelper.generateToken(loginRequestDto.username());
-    CsrfToken csrfToken = csrfTokenRepository.generateToken(request);
-    csrfTokenRepository.saveToken(csrfToken, request, response);
 
-    return ResponseEntity.ok(new LoginResponseDto(jwToken, csrfToken));
+    return ResponseEntity.ok(new LoginResponseDto(jwToken));
   }
 }
