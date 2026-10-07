@@ -1,7 +1,7 @@
 # Accounting App - Back end
 ## Introduction
 L'Accouting App est une application en cours de développement qui a pour but d'aider la gestion des comptes et des
-budgets. Ce dépôt git se concentre uniquement sur la partie back end de l'application
+budgets. Ce dépôt git se concentre uniquement sur la partie back end de l'application.
 
 L'idée est partie d'une fiche de calcul que beaucoup de personnes ont certainement fait pour gérer leur argent. Le
 problème étant que ces fiches sont soit trop compliquées à mettre en place, soit trop compliquées à maintenir à cause de
@@ -48,6 +48,13 @@ développement. Tout comme pour le fichier d'environnement de développement, il
 et de le mettre cette fois-ci dans le répertoire [src/test/resources](src/test/resources) avec le nom `env.properties`.
 Il ne faudra pas oublier de créer une base de donnée dédiée aux tests et de mettre ses informations de connexion dans le
 fichier copié. 
+
+### Lancement des tests
+Le lancement des tests se fait simplement avec la commande `mvn clean install compile test`.
+
+### Suivi des tests
+Un plugin est présent pour observer la couverture de test. Une fois les tests lancés, il suffit d'ouvrir le fichier
+[target/site/jacoco/index.html](target/site/jacoco/index.html).
 
 ## Licence
 Ce projet est protégé par la licence GPLv3.
