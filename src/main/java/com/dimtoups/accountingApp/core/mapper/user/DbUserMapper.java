@@ -10,5 +10,6 @@ import org.mapstruct.*;
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface DbUserMapper {
   @Mapping(target = "enabled", ignore = true)
+  @Mapping(target = "password", ignore = true)
   User updateUser(@MappingTarget User userTarget, UpdateUserDto userSource);
 }
