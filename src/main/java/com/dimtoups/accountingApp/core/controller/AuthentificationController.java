@@ -4,14 +4,11 @@ import com.dimtoups.accountingApp.core.controller.dto.authentification.*;
 import com.dimtoups.accountingApp.core.helper.JwtHelper;
 import com.dimtoups.accountingApp.core.mapper.user.UserControllerDtoToServiceDtoMapper;
 import com.dimtoups.accountingApp.core.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,14 +36,7 @@ public class AuthentificationController {
   //
 
   @GetMapping("/signup")
-  public ResponseEntity<GetSignupResponseDto> signup(
-      CookieCsrfTokenRepository csrfTokenRepository,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    // Generating a csrf token
-    CsrfToken csrfToken = csrfTokenRepository.generateToken(request);
-    csrfTokenRepository.saveToken(csrfToken, request, response);
-
+  public ResponseEntity<GetSignupResponseDto> signup(CsrfToken csrfToken) {
     GetSignupResponseDto getSignupResponseDto = new GetSignupResponseDto(csrfToken);
     return ResponseEntity.status(200).body(getSignupResponseDto);
   }
@@ -58,14 +48,7 @@ public class AuthentificationController {
   }
 
   @GetMapping("/login")
-  public ResponseEntity<GetLoginResponseDto> login(
-      CookieCsrfTokenRepository csrfTokenRepository,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    // Generating a csrf token
-    CsrfToken csrfToken = csrfTokenRepository.generateToken(request);
-    csrfTokenRepository.saveToken(csrfToken, request, response);
-
+  public ResponseEntity<GetLoginResponseDto> login(CsrfToken csrfToken) {
     GetLoginResponseDto getLoginResponseDto = new GetLoginResponseDto(csrfToken);
     return ResponseEntity.status(200).body(getLoginResponseDto);
   }
