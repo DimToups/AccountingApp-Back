@@ -19,11 +19,8 @@ spring:
       ddl-auto: update
     open-in-view: true
 
-#logging:
-#  level:
-#    org:
-#      springframework.web: TRACE
-#      hibernate: ERROR
+client:
+  url: ${FRONT_URL}
 
 springdoc:
   swagger-ui:
