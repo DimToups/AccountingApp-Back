@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,27 +31,10 @@ public class AuthentificationController {
     this.userControllerDtoToServiceDtoMapper = userControllerDtoToServiceDtoMapper;
   }
 
-
-  //
-  // Requests
-  //
-
-  @GetMapping("/signup")
-  public ResponseEntity<GetSignupResponseDto> signup(CsrfToken csrfToken) {
-    GetSignupResponseDto getSignupResponseDto = new GetSignupResponseDto(csrfToken);
-    return ResponseEntity.status(200).body(getSignupResponseDto);
-  }
-
   @PostMapping("/signup")
   public ResponseEntity<String> signup(@Valid @RequestBody PostSignupRequestDto postSignupRequestDto) {
     userService.createUser(userControllerDtoToServiceDtoMapper.createUser(postSignupRequestDto));
     return ResponseEntity.status(HttpStatus.CREATED).build();
-  }
-
-  @GetMapping("/login")
-  public ResponseEntity<GetLoginResponseDto> login(CsrfToken csrfToken) {
-    GetLoginResponseDto getLoginResponseDto = new GetLoginResponseDto(csrfToken);
-    return ResponseEntity.status(200).body(getLoginResponseDto);
   }
 
   @PostMapping("/login")
@@ -64,4 +48,10 @@ public class AuthentificationController {
 
     return ResponseEntity.ok(new LoginResponseDto(jwToken));
   }
+
+  @GetMapping("/csrfToken")
+  public ResponseEntity<CsrfToken> getCsrfToken(CsrfToken csrfToken) {
+    return ResponseEntity.ok(csrfToken);
+  }
+
 }

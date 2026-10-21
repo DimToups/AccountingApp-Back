@@ -25,7 +25,10 @@ import javax.sql.DataSource;
 public class SecurityConfiguration {
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager, JwtAuthFilter jwtAuthFilter) {
+  public SecurityFilterChain filterChain(
+      HttpSecurity http,
+      AuthenticationManager authenticationManager,
+      JwtAuthFilter jwtAuthFilter) {
     http
         .csrf(csrf -> csrf
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -35,8 +38,10 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.GET, "/login", "/signup").permitAll()
             .requestMatchers(HttpMethod.POST, "/login", "/signup").permitAll()
+            .requestMatchers(HttpMethod.GET, "/csrfToken").permitAll()
             .anyRequest().authenticated()
         )
+        .cors(Customizer.withDefaults())
         .authenticationManager(authenticationManager)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

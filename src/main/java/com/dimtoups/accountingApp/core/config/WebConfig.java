@@ -1,0 +1,27 @@
+package com.dimtoups.accountingApp.core.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+  private final String frontUrl;
+
+  public WebConfig(@Value("${client.url}") String frontUrl) {
+    this.frontUrl = frontUrl;
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+        .allowedOriginPatterns(frontUrl)
+        .allowedMethods("*")
+        .allowedHeaders("*")
+        .exposedHeaders("Authorization")
+        .allowCredentials(true);
+  }
+
+}
