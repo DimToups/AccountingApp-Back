@@ -40,8 +40,12 @@ public class AuthentificationController {
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody PostLoginRequestDto loginRequestDto) {
     // Authenticating the user
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequestDto.username(), loginRequestDto.password()));
+    try {
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(loginRequestDto.username(), loginRequestDto.password()));
+    } catch (AuthenticationException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
 
     // Generating the user's JWT
     String jwToken = JwtHelper.generateToken(loginRequestDto.username());
