@@ -32,7 +32,7 @@ public class AuthentificationController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<String> signup(@Valid @RequestBody PostSignupRequestDto postSignupRequestDto) {
+  public ResponseEntity<Void> signup(@Valid @RequestBody PostSignupRequestDto postSignupRequestDto) {
     userService.createUser(userControllerDtoToServiceDtoMapper.createUser(postSignupRequestDto));
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
